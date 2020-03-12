@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\User;
 use Illuminate\Http\Request;
 
 class tableController extends Controller
@@ -13,7 +15,8 @@ class tableController extends Controller
      */
     public function index()
     {
-        return view('contents.tables.index');
+        $users = \App\User::all();
+        return view('contents.tables.index',['users'=>$users]);
     }
 
     /**
@@ -23,7 +26,7 @@ class tableController extends Controller
      */
     public function create()
     {
-        //
+        return view('contents.tables.add');
     }
 
     /**
@@ -34,7 +37,12 @@ class tableController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->Hash::make($request['password']);
+        $user->save();
+        return redirect('/table');
     }
 
     /**

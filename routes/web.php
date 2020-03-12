@@ -13,10 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('contents.home.index');
 });
 
-Route::resource('/table', 'tableController');
 
-Route::resource('/chart', 'chartController');
+Route::resource('/chart', 'chartController')->middleware('auth');
+
+Route::resource('/table', 'tableController')->middleware('auth');
+
+Route::get('/', 'HomeController@index')->middleware('auth');
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('table/store','tableController@store');
+
